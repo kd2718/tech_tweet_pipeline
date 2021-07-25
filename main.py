@@ -2,35 +2,17 @@ import tweepy
 from dotenv import load_dotenv
 from os import environ as env
 from pprint import pprint
-from kafka import KafkaProducer 
+from tweepy_setup import get_twitter_api
 
 load_dotenv()
 
 # this is a demo to make sure everyting is working
 
-def get_auth():
-    auth = tweepy.OAuthHandler(
-        consumer_key=env.get("CONSUMER_KEY", ""),
-        consumer_secret=env.get("CONSUMER_SECRET", "")
-    )
-
-    auth.set_access_token(
-        env.get("ACCESS_TOKEN", ""),
-        env.get("ACCESS_TOKEN_SECRET", "")
-    )
-    return auth
-
-
-
 if __name__ == "__main__":
 
-    auth = get_auth()
-    api = tweepy.API(auth)
+    api = get_twitter_api()
 
     public_tweets = api.home_timeline()
     for tweet in public_tweets:
-        #print(dir(tweet))
-        #print(tweet.text)
-        pprint(tweet._json)
+        print(tweet.text)
         print("*"*30)
-        break
