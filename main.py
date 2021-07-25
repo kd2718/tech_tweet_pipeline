@@ -1,6 +1,8 @@
 import tweepy
 from dotenv import load_dotenv
 from os import environ as env
+from pprint import pprint
+from kafka import KafkaProducer 
 
 load_dotenv()
 
@@ -27,5 +29,8 @@ if __name__ == "__main__":
 
     public_tweets = api.home_timeline()
     for tweet in public_tweets:
-        print(tweet.text)
+        #print(dir(tweet))
+        #print(tweet.text)
+        pprint(tweet._json)
         print("*"*30)
+        break
