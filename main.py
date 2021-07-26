@@ -2,7 +2,8 @@ import tweepy
 from dotenv import load_dotenv
 from os import environ as env
 from pprint import pprint
-from tweepy_setup import get_twitter_api
+from tweepy_setup import get_twitter_api, get_twitter_stream
+from kafka_setup import get_kafka_producer
 
 load_dotenv()
 
@@ -11,8 +12,6 @@ load_dotenv()
 if __name__ == "__main__":
 
     api = get_twitter_api()
-
-    public_tweets = api.home_timeline()
-    for tweet in public_tweets:
-        print(tweet.text)
-        print("*"*30)
+    producer = get_kafka_producer()
+    stream = get_twitter_stream(producer)
+    stream.filter(track=["covid", ])

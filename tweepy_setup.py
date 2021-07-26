@@ -1,9 +1,11 @@
 import tweepy
+from tweepy import StreamListener
 from dotenv import load_dotenv
 from os import environ as env
-from pprint import pprint
+from kafka import KafkaProducer
 
 load_dotenv()
+TOPIC = env.get("KAFKA_TOPIC")
 
 ## Helper functions to get stream details. Make sure .env is setup with API keys
 def __get_twitter_auth() -> tweepy.OAuthHandler:
@@ -22,8 +24,28 @@ def get_twitter_api() -> tweepy.API:
     auth = __get_twitter_auth()
     return tweepy.API(auth)
 
-def get_twitter_stream():
-    pass
+
+class StdOutListener(StreamListener):
+    def __init__(self, producer: KafkaProducer, api=None):
+        super().__init__(api=api)
+        self.producer = producer
+
+
+    def on_data(self, raw_data):
+        if valid := super().on_data(raw_data):
+            print(raw_data)
+            print("*"*50)
+            self.producer.send(TOPIC, raw_data)
+        return valid
+    
+    def on_error(self, status_code):
+        print(status_code)
+
+def get_twitter_stream(producer, listener=None) -> tweepy.Stream:
+    listener = listener if listener is not None else StdOutListener(producer)
+    auth = __get_twitter_auth()
+
+    return tweepy.Stream(auth, listener=listener)
 
 
 
