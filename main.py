@@ -18,12 +18,14 @@ if __name__ == "__main__":
     stream = get_twitter_stream(producer)
     #stream.filter(track=["python", ])
     print("start stream")
-    stream.filter(track=['python'], is_async=True)
+    stream.filter(track=["python", "kotlin", "c#", "dotnet", "rust"], is_async=True)
 
     consumer = get_kafka_consumer()
 
     for msg in consumer:
         #print(type(msg))
         #print(json.loads(msg))
-        print(json.loads(msg.value))
+        jmsg = json.loads(msg.value)
+        print(jmsg)
+
 
