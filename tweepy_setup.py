@@ -32,11 +32,13 @@ class StdOutListener(StreamListener):
 
 
     def on_data(self, raw_data):
-        if valid := super().on_data(raw_data):
-            print(raw_data)
-            print("*"*50)
-            self.producer.send(TOPIC, raw_data)
-        return valid
+        #print("data")
+        #valid = super.on_datra
+        #if valid := super().on_data(raw_data):
+        #print(raw_data)
+        #print("*"*50)
+        self.producer.send(TOPIC, raw_data)
+        return True
     
     def on_error(self, status_code):
         print(status_code)
