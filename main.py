@@ -19,11 +19,14 @@ if __name__ == "__main__":
     stream = get_twitter_stream(producer)
     #stream.filter(track=["python", ])
     print("start stream")
-    stream.filter(track=["python", "kotlin", "c#", "dotnet", "rust", "java", "f#", "c++", "javascript"], is_async=True)
+    stream.filter(
+        track=["python", "kotlin", "c#", "dotnet", "rust", "java", "f#", "c++", "javascript"], 
+        is_async=True
+    )
 
-    while True:
-        stream.flush()
-        time.sleep(5)
+    #while True:
+        #producer.flush()
+        #time.sleep(5)
 
     consumer = get_kafka_consumer()
 

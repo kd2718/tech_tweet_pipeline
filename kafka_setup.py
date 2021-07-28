@@ -15,7 +15,7 @@ def get_kafka_producer():
 
 def get_kafka_consumer(topic=TOPIC):
     print(f"topic set to {topic}")
-    consumer = KafkaConsumer(topic, bootstrap_servers=env.get("KAFKA_SERVER", "localhost:9092"))
+    consumer = KafkaConsumer(topic, bootstrap_servers=env.get("KAFKA_SERVER", "localhost:9092"), group_id="tweet_group")
     return consumer
 
 

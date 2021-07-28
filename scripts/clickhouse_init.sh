@@ -8,6 +8,8 @@
 echo $KAFKA_SERVER
 clickhouse-client --query "CREATE DATABASE IF NOT EXISTS TWITTER"
 
+
+clickhouse-client --query "drop table if exists TWITTER.kafka_tweets_stream;"
 clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_stream (\
     ID UInt64,\
     CREATEDAT DateTime,\
@@ -22,7 +24,7 @@ clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_strea
   ) ENGINE = Kafka SETTINGS \
     kafka_broker_list = '$KAFKA_SERVER',\
     kafka_topic_list = '$KAFKA_TOPIC',\
-    kafka_group_name = 'some_tweets',\
+    kafka_group_name = 'tweet-group',\
     kafka_format = 'JSONEachRow',\
     kafka_skip_broken_messages = 1,\
     kafka_num_consumers = 1;"
