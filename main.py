@@ -24,9 +24,9 @@ if __name__ == "__main__":
         is_async=True
     )
 
-    #while True:
-        #producer.flush()
-        #time.sleep(5)
+    while True:
+        producer.flush()
+        time.sleep(5)
 
     consumer = get_kafka_consumer()
 
