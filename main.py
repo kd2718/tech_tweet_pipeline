@@ -6,6 +6,7 @@ from tweepy_setup import get_twitter_api, get_twitter_stream
 from kafka_setup import get_kafka_consumer, get_kafka_producer
 from kafka import KafkaConsumer
 import json
+import time
 
 load_dotenv()
 
@@ -18,7 +19,11 @@ if __name__ == "__main__":
     stream = get_twitter_stream(producer)
     #stream.filter(track=["python", ])
     print("start stream")
-    stream.filter(track=["python", "kotlin", "c#", "dotnet", "rust"], is_async=True)
+    stream.filter(track=["python", "kotlin", "c#", "dotnet", "rust", "java", "f#", "c++", "javascript"], is_async=True)
+
+    while True:
+        stream.flush()
+        time.sleep(5)
 
     consumer = get_kafka_consumer()
 

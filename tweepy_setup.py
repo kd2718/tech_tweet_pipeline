@@ -37,6 +37,7 @@ class StdOutListener(StreamListener):
         #if valid := super().on_data(raw_data):
         #print(raw_data)
         #print("*"*50)
+        print(raw_data)
         self.producer.send(TOPIC, raw_data)
         return True
     
