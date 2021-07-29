@@ -9,7 +9,7 @@ services:
     ports:
       - 22181:2181
   
-  kafka:
+  kafka-main:
     restart: "no"
     image: confluentinc/cp-kafka:6.2.0
     depends_on: 
@@ -19,7 +19,7 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-main:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -27,10 +27,11 @@ services:
   
   clickhouse-server:
     restart: "no"
-    image: yandex/clickhouse-server:21.7.4.18-alpine
+    #image: yandex/clickhouse-server:21.7.4.18-alpine
+    image: yandex/clickhouse-server:21.3.13.9
     depends_on:
       - zookeeper
-      - kafka
+      - kafka-main
     ports:
       - 8123:8123
       - 9000:9000

@@ -6,6 +6,7 @@
 
 # create KAFKA table
 echo $KAFKA_SERVER
+clickhouse-client --query "drop database if exists TWITTER;"
 clickhouse-client --query "CREATE DATABASE IF NOT EXISTS TWITTER"
 
 
@@ -22,13 +23,17 @@ clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_strea
     HASHTAGS String,\
     MENTIONS String\
   ) ENGINE = Kafka SETTINGS \
-    kafka_broker_list = '$KAFKA_SERVER',\
-    kafka_topic_list = '$KAFKA_TOPIC',\
-    kafka_group_name = 'tweet-group',\
+    kafka_broker_list = 'kafka-main:29092', \
+    kafka_topic_list = 'tech_twitter_stream', \
+    kafka_group_name = 'tweet_group1',\
     kafka_format = 'JSONEachRow',\
+    kafka_commit_every_batch = 1,\
+    kafka_row_delimiter = '\n', \
     kafka_num_consumers = 1;"
     #kafka_group_name = 'ch-tweet-group',\
     #kafka_skip_broken_messages = 1,\
+    #kafka_broker_list = '$KAFKA_SERVER',\
+    #kafka_topic_list = '$KAFKA_TOPIC',\
 
 # create clickhouse table
 clickhouse-client --query "CREATE TABLE IF NOT EXISTS TWITTER.tweets\
