@@ -23,10 +23,10 @@ clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_strea
     HASHTAGS String,\
     MENTIONS String\
   ) ENGINE = Kafka SETTINGS \
-    kafka_broker_list = 'kafka-main:29092', \
+    kafka_broker_list = 'kafka:9092', \
     kafka_topic_list = 'tech_twitter_stream', \
     kafka_group_name = 'tweet_group1',\
-    kafka_format = 'JSONEachRow',\
+    kafka_format = 'JSONStringsEachRow',\
     kafka_commit_every_batch = 1,\
     kafka_row_delimiter = '\n', \
     kafka_num_consumers = 1;"
