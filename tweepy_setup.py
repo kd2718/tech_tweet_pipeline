@@ -3,6 +3,7 @@ from tweepy import StreamListener
 from dotenv import load_dotenv
 from os import environ as env
 from kafka import KafkaProducer
+import json
 
 load_dotenv()
 TOPIC = env.get("KAFKA_TOPIC")
@@ -32,13 +33,15 @@ class StdOutListener(StreamListener):
 
 
     def on_data(self, raw_data):
+        data = json.loads(raw_data)
         #print("data")
         #valid = super.on_datra
         #if valid := super().on_data(raw_data):
         #print(raw_data)
         #print("*"*50)
         #print(raw_data)
-        self.producer.send(TOPIC, raw_data)
+        #print(data)
+        self.producer.send(TOPIC, data)
         return True
     
     def on_error(self, status_code):

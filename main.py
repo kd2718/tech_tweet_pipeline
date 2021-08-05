@@ -11,6 +11,7 @@ import time
 load_dotenv()
 
 # this is a demo to make sure everyting is working
+DEBUG = False
 
 if __name__ == "__main__":
 
@@ -27,13 +28,17 @@ if __name__ == "__main__":
     while True:
         producer.flush()
         time.sleep(5)
+        if DEBUG is True:
+            break
 
     consumer = get_kafka_consumer()
 
     for msg in consumer:
-        #print(type(msg))
+        print(type(msg))
+        print(msg)
         #print(json.loads(msg))
-        jmsg = json.loads(msg.value)
-        print(jmsg)
+        #jmsg = json.loads(msg.value)
+        #print(jmsg)
+        break
 
 

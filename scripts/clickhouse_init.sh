@@ -12,16 +12,16 @@ clickhouse-client --query "CREATE DATABASE IF NOT EXISTS TWITTER"
 
 clickhouse-client --query "drop table if exists TWITTER.kafka_tweets_stream;"
 clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_stream (\
-    ID UInt64,\
-    CREATEDAT DateTime,\
-    TEXT String,\
-    LANG String,\
-    RETWEETED UInt8,\
-    USERID UInt64,\
-    USERNAME String,\
-    USERLOCATION String,\
-    HASHTAGS String,\
-    MENTIONS String\
+    id UInt64,\
+    created_at DateTime,\
+    text String,\
+    lang String,\
+    retweeted UInt8,\
+    userid UInt64,\
+    username String,\
+    userlocation String,\
+    hashtags String,\
+    mentions String\
   ) ENGINE = Kafka SETTINGS \
     kafka_broker_list = 'kafka:9092', \
     kafka_topic_list = 'tech_twitter_stream', \
