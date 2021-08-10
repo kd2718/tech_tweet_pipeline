@@ -7,6 +7,7 @@ from kafka_setup import get_kafka_consumer, get_kafka_producer
 from kafka import KafkaConsumer
 import json
 import time
+from pprint import pprint
 
 load_dotenv()
 
@@ -35,7 +36,7 @@ if __name__ == "__main__":
 
     for msg in consumer:
         print(type(msg))
-        print(msg)
+        pprint(json.loads(msg.value))
         #print(json.loads(msg))
         #jmsg = json.loads(msg.value)
         #print(jmsg)

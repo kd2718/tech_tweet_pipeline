@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from os import environ as env
 from kafka import KafkaProducer
 import json
+from pprint import pprint
 
 load_dotenv()
 TOPIC = env.get("KAFKA_TOPIC")
@@ -33,8 +34,9 @@ class StdOutListener(StreamListener):
 
 
     def on_data(self, raw_data):
-        data = json.loads(raw_data)
+        data = json.loads(raw_data.encode('utf8', 'replace'))
         #print("data")
+        #pprint(data)
         #valid = super.on_datra
         #if valid := super().on_data(raw_data):
         #print(raw_data)

@@ -13,10 +13,10 @@ clickhouse-client --query "CREATE DATABASE IF NOT EXISTS TWITTER"
 clickhouse-client --query "drop table if exists TWITTER.kafka_tweets_stream;"
 clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_stream (\
     ID UInt64,\
+    id_str String,\
     CREATEDAT DateTime,\
-    TEXT String,\
-    LANG String,\
-    RETWEETED UInt8,\
+    text String,\
+    lang String null,\
     USERID UInt64,\
     USERNAME String,\
     USERLOCATION String,\
@@ -29,6 +29,7 @@ clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_strea
     kafka_format = 'JSONStringsEachRow',\
     kafka_commit_every_batch = 1,\
     kafka_row_delimiter = '\n', \
+    kafka_skip_broken_messages = 0, \
     kafka_num_consumers = 1;"
     #kafka_group_name = 'ch-tweet-group',\
     #kafka_skip_broken_messages = 1,\
@@ -36,13 +37,14 @@ clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_strea
     #kafka_topic_list = '$KAFKA_TOPIC',\
 
 # create clickhouse table
+clickhouse-client --query "drop table if exists TWITTER.tweets"
 clickhouse-client --query "CREATE TABLE IF NOT EXISTS TWITTER.tweets\
 (\
     ID UInt64,\
+    id_str String, \
     CREATEDAT DateTime,\
-    TEXT String,\
-    LANG String,\
-    RETWEETED UInt8,\
+    text String,\
+    lang String,\
     USERID UInt64,\
     USERNAME String,\
     USERDESCRIPTION String,\
@@ -52,12 +54,14 @@ clickhouse-client --query "CREATE TABLE IF NOT EXISTS TWITTER.tweets\
 ) ENGINE = MergeTree()\
 PARTITION BY toYYYYMM(CREATEDAT)\
 ORDER BY (USERID, CREATEDAT);"
+#retweeted UInt8,\
 
 
 # more help
 # https://altinity.com/blog/2020/5/21/clickhouse-kafka-engine-tutorial
 
 # create materialized view
+clickhouse-client --query "drop view if exists TWITTER.tweets_queue"
 clickhouse-client --query "CREATE MATERIALIZED VIEW if not exists TWITTER.tweets_queue TO TWITTER.tweets AS \
 SELECT *
 FROM TWITTER.kafka_tweets_stream;"

@@ -9,7 +9,7 @@ TOPIC = env.get("KAFKA_TOPIC")
 def get_kafka_producer():
     prod = KafkaProducer(
         bootstrap_servers=env.get("KAFKA_SERVER", "localhost:9092"),
-        value_serializer=lambda v: json.dumps(v).encode('utf-8')
+        value_serializer=lambda v: json.dumps(v).encode('utf-8', 'replace')
     )
     return prod
 
