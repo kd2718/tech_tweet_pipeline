@@ -5,6 +5,7 @@ from os import environ as env
 from kafka import KafkaProducer
 import json
 from pprint import pprint
+from datetime import datetime
 
 load_dotenv()
 TOPIC = env.get("KAFKA_TOPIC")
@@ -35,6 +36,14 @@ class StdOutListener(StreamListener):
 
     def on_data(self, raw_data):
         data = json.loads(raw_data.encode('utf8', 'replace'))
+        data['test_dat'] = '5'
+        tweet_date = datetime.strptime(data["created_at"], "%a %b %d %H:%M:%S %z %Y")
+        #print(tweet_date)
+        data["created_at"] = tweet_date.strftime("%Y-%m-%d %H:%M:%S")
+        #pprint(data)
+
+        
+        #pprint(data)
         #print("data")
         #pprint(data)
         #valid = super.on_datra

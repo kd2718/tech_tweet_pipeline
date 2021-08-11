@@ -14,23 +14,24 @@ clickhouse-client --query "drop table if exists TWITTER.kafka_tweets_stream;"
 clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_stream (\
     ID UInt64,\
     id_str String,\
-    CREATEDAT DateTime,\
+    created_at DateTime,\
     text String,\
     lang String null,\
     USERID UInt64,\
     USERNAME String,\
     USERLOCATION String,\
     HASHTAGS String,\
+    test_dat Int8, \
     MENTIONS String\
   ) ENGINE = Kafka SETTINGS \
     kafka_broker_list = 'kafka:9092', \
     kafka_topic_list = 'tech_twitter_stream', \
     kafka_group_name = 'tweet_group1',\
-    kafka_format = 'JSONStringsEachRow',\
+    kafka_format = 'JSONEachRow',\
     kafka_commit_every_batch = 1,\
-    kafka_row_delimiter = '\n', \
-    kafka_skip_broken_messages = 0, \
     kafka_num_consumers = 1;"
+    #kafka_skip_broken_messages = 'Y', \
+    #kafka_row_delimiter = '\n', \
     #kafka_group_name = 'ch-tweet-group',\
     #kafka_skip_broken_messages = 1,\
     #kafka_broker_list = '$KAFKA_SERVER',\
@@ -42,7 +43,7 @@ clickhouse-client --query "CREATE TABLE IF NOT EXISTS TWITTER.tweets\
 (\
     ID UInt64,\
     id_str String, \
-    CREATEDAT DateTime,\
+    created_at DateTime,\
     text String,\
     lang String,\
     USERID UInt64,\
@@ -50,10 +51,11 @@ clickhouse-client --query "CREATE TABLE IF NOT EXISTS TWITTER.tweets\
     USERDESCRIPTION String,\
     USERLOCATION String,\
     HASHTAGS String,\
+    test_dat Int8, \
     MENTIONS String\
 ) ENGINE = MergeTree()\
-PARTITION BY toYYYYMM(CREATEDAT)\
-ORDER BY (USERID, CREATEDAT);"
+PARTITION BY toYYYYMM(created_at)\
+ORDER BY (USERID, created_at);"
 #retweeted UInt8,\
 
 
