@@ -12,11 +12,15 @@ clickhouse-client --query "CREATE DATABASE IF NOT EXISTS TWITTER"
 
 clickhouse-client --query "drop table if exists TWITTER.kafka_tweets_stream;"
 clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_stream (\
-    ID UInt64,\
+    id UInt64,\
     id_str String,\
     created_at DateTime,\
     text String,\
     lang String null,\
+    user Nested ( \
+      id UInt64, \
+      name String \
+    ), \
     USERID UInt64,\
     USERNAME String,\
     USERLOCATION String,\
@@ -41,11 +45,15 @@ clickhouse-client --query "CREATE TABLE if not exists TWITTER.kafka_tweets_strea
 clickhouse-client --query "drop table if exists TWITTER.tweets"
 clickhouse-client --query "CREATE TABLE IF NOT EXISTS TWITTER.tweets\
 (\
-    ID UInt64,\
+    id UInt64,\
     id_str String, \
     created_at DateTime,\
     text String,\
     lang String,\
+    user Nested ( \
+      id UInt64, \
+      name String \
+    ), \
     USERID UInt64,\
     USERNAME String,\
     USERDESCRIPTION String,\
