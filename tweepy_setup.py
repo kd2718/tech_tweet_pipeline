@@ -45,7 +45,7 @@ class StdOutListener(StreamListener):
         
         #pprint(data)
         #print("data")
-        pprint(data)
+        #pprint(data)
         #valid = super.on_datra
         #if valid := super().on_data(raw_data):
         #print(raw_data)
