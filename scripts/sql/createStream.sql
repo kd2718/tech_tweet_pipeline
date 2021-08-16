@@ -1,19 +1,15 @@
-CREATE TABLE if not exists TWITTER.kafka_tweets_stream (
+set input_format_import_nested_json=1;
+CREATE TABLE if not exists TWITTER.kafka_tweets_stream 
+(
     id UInt64,
-    id_str String,
     created_at DateTime,
     text String,
+    full_text String,
+    is_retweet Boolean,
     lang String null,
-    user Nested ( 
-      id UInt64, 
-      name String 
-    ), 
     USERID UInt64,
     USERNAME String,
-    USERLOCATION String,
-    HASHTAGS String,
-    test_dat Int8, 
-    MENTIONS String
+    tweet_url String
   ) ENGINE = Kafka SETTINGS 
     kafka_broker_list = 'kafka:9092', 
     kafka_topic_list = 'tech_twitter_stream', 

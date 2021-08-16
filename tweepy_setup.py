@@ -41,6 +41,20 @@ class StdOutListener(StreamListener):
         #print(tweet_date)
         data["created_at"] = tweet_date.strftime("%Y-%m-%d %H:%M:%S")
         #pprint(data)
+        user = data.get("user", {})
+        data["USERID"] = user.get("id")
+        data["USERNAME"] = user.get("name")
+        data["tweet_url"] = "https://twitter.com/twitter/status/" + data.get("id_str")
+        data["is_retweet"] = 0
+        rt = data
+        if "retweeted_status" in data:
+            data["is_retweet"] = 1
+            rt = data["retweeted_status"]
+        try:
+            data['full_text'] = rt.get("extended_tweet", {}).get("full_text", data["text"])
+        except Exception as e:
+            pprint(data)
+            raise e
 
         
         #pprint(data)

@@ -1,21 +1,15 @@
+set input_format_import_nested_json=1;
 CREATE TABLE IF NOT EXISTS TWITTER.tweets
 (
     id UInt64,
-    id_str String, 
     created_at DateTime,
     text String,
+    full_text String, 
+    is_retweet Boolean,
     lang String,
-    user Nested ( 
-      id UInt64, 
-      name String 
-    ), 
     USERID UInt64,
     USERNAME String,
-    USERDESCRIPTION String,
-    USERLOCATION String,
-    HASHTAGS String,
-    test_dat Int8, 
-    MENTIONS String
+    tweet_url String
 ) ENGINE = MergeTree()
 PARTITION BY toYYYYMM(created_at)
 ORDER BY (USERID, created_at);

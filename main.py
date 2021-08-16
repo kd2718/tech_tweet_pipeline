@@ -22,7 +22,7 @@ if __name__ == "__main__":
     #stream.filter(track=["python", ])
     print("start stream")
     stream.filter(
-        track=["python", "kotlin", "c#", "dotnet", "rust", "java", "f#", "c++", "javascript"], 
+        track=["#python", "#kotlin", "#c#", "#dotnet", "#rust", "#java", "#f#", "#c++", "#javascript"], 
         is_async=True
     )
 
