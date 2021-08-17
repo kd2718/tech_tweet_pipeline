@@ -9,7 +9,10 @@ CREATE TABLE if not exists TWITTER.kafka_tweets_stream
     lang String null,
     USERID UInt64,
     USERNAME String,
-    tweet_url String
+    tweet_url String,
+    retweet_id UInt64,
+    retweet_created_at DateTime,
+    retweet_user_id UInt64
   ) ENGINE = Kafka SETTINGS 
     kafka_broker_list = 'kafka:9092', 
     kafka_topic_list = 'tech_twitter_stream', 

@@ -6,13 +6,13 @@
 
 # create KAFKA table
 echo $KAFKA_SERVER
-clickhouse-client --query "drop database if exists TWITTER;"
+#clickhouse-client --query "drop database if exists TWITTER;"
 clickhouse-client --query "CREATE DATABASE IF NOT EXISTS TWITTER"
 
 
-clickhouse-client --query "drop table if exists TWITTER.kafka_tweets_stream;"
-clickhouse-client --query "drop table if exists TWITTER.tweets"
-clickhouse-client --query "drop view if exists TWITTER.tweets_queue"
+#clickhouse-client --query "drop table if exists TWITTER.kafka_tweets_stream;"
+#clickhouse-client --query "drop table if exists TWITTER.tweets"
+#clickhouse-client --query "drop view if exists TWITTER.tweets_queue"
 
 clickhouse-client --queries-file /opt/scripts/sql/createStream.sql /opt/scripts/sql/createTweets.sql /opt/scripts/sql/createView.sql
 

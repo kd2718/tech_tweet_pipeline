@@ -33,13 +33,22 @@ class StdOutListener(StreamListener):
         super().__init__(api=api)
         self.producer = producer
 
+    @staticmethod
+    def __get_datetime(dt:str)-> datetime:
+        try:
+            tweet_date = datetime.strptime(dt, "%a %b %d %H:%M:%S %z %Y")
+            return tweet_date.strftime("%Y-%m-%d %H:%M:%S")
+        except:
+            return None
+
 
     def on_data(self, raw_data):
         data = json.loads(raw_data.encode('utf8', 'replace'))
         data['test_dat'] = '5'
-        tweet_date = datetime.strptime(data["created_at"], "%a %b %d %H:%M:%S %z %Y")
+        #tweet_date = self.__get_datetime(data['created_at'])
         #print(tweet_date)
-        data["created_at"] = tweet_date.strftime("%Y-%m-%d %H:%M:%S")
+        #data["created_at"] = tweet_date.strftime("%Y-%m-%d %H:%M:%S")
+        data["created_at"] = self.__get_datetime(data["created_at"])
         #pprint(data)
         user = data.get("user", {})
         data["USERID"] = user.get("id")
@@ -47,10 +56,15 @@ class StdOutListener(StreamListener):
         data["tweet_url"] = "https://twitter.com/twitter/status/" + data.get("id_str")
         data["is_retweet"] = 0
         rt = data
+        is_retweet = False
         if "retweeted_status" in data:
-            data["is_retweet"] = 1
+            is_retweet = True
             rt = data["retweeted_status"]
+            data['retweet_user_id'] = rt.get("user", {}).get("id", None)
+            data['retweet_id'] = rt.get("id", None)
         try:
+            data['retweet_created_at'] = self.__get_datetime(rt.get("created_at", ""))
+            data["is_retweet"] = is_retweet
             data['full_text'] = rt.get("extended_tweet", {}).get("full_text", data["text"])
         except Exception as e:
             pprint(data)
