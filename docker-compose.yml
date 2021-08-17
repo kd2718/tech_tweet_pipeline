@@ -1,7 +1,8 @@
 version: '2'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    restart: "no"
+    image: confluentinc/cp-zookeeper:6.2.0
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -9,8 +10,9 @@ services:
       - 22181:2181
   
   kafka:
-    image: confluentinc/cp-kafka:latest
-    depends_on:
+    restart: "no"
+    image: confluentinc/cp-kafka:6.2.0
+    depends_on: 
       - zookeeper
     ports:
       - 29092:29092
@@ -21,3 +23,25 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  
+  clickhouse-server:
+    restart: "no"
+    image: yandex/clickhouse-server:21.7.4.18
+    #image: yandex/clickhouse-server:21.3.13.9
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+      - 8123:8123
+      - 9000:9000
+    volumes:
+      - ./scripts/shell:/docker-entrypoint-initdb.d
+      - ./scripts/sql:/opt/scripts/sql
+    ulimits: 
+      nofile:
+        soft: 262144
+        hard: 262144
+    environment:
+      KAFKA_SERVER : $KAFKA_SERVER
+      KAFKA_TOPIC: $KAFKA_TOPIC
